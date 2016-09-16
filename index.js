@@ -1,22 +1,17 @@
-//var http = require('http');
-//
-//http.createServer(function(req, res){
-//    res.writeHead(200,{
-//       'Content-type' : 'text/plain'
-//    });
-//    res.end('Hello');
-//}).listen(3000);
-//
-//console.log('Server running at http://127.0.0.1:3000/');
-
-
-
 var express = require('express');
 var app = express();
 
-app.get('/', function(req, res){
-   res.send('hello');
-});
+var bodyParser = require('body-parser');
+
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/cats');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+   extended: true
+}));
+
+var cat_routes = require('./cat_routes.js')(app);
 
 var server = app.listen(3000, function(){
    console.log('server running');
